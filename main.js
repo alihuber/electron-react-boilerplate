@@ -1,7 +1,6 @@
 // Import parts of electron to use
 const { app, BrowserWindow, autoUpdater, dialog, ipcMain } = require('electron');
 const url = require('url');
-const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const ChildProcess = require('child_process');
@@ -32,6 +31,9 @@ function createWindow() {
     show: false,
     // frame: false,
     resizable: false,
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   // and load the index.html of the app.
