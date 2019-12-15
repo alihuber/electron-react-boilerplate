@@ -2,7 +2,7 @@ const ipc = require('electron').ipcRenderer;
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import '../assets/css/App.css';
+import '../index.css';
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
