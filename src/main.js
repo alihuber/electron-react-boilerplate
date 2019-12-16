@@ -1,4 +1,4 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, autoUpdater } = require('electron');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -6,16 +6,53 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
-
 // Keep a reference for dev mode
 let dev = false;
 if (process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) || /[\\/]electron[\\/]/.test(process.execPath)) {
   dev = true;
 }
 
+// this has to point to an http endpoint aka static file store
+const DOMAIN = 'http://192.168.178.67:8000';
+const suffix = process.platform === 'darwin' ? `/RELEASES.json?method=JSON&version=${app.getVersion()}` : '';
+if (!dev) {
+  autoUpdater.setFeedURL({
+    url: `${DOMAIN}/electron-react-boilerplate/e144139231850cb25e2e147ce708e409/${process.platform}/${process.arch}${suffix}`,
+    serverType: 'json',
+  });
+
+  setInterval(() => {
+    autoUpdater.checkForUpdates();
+  }, 60000);
+
+  autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: 'info',
+      buttons: ['Restart', 'Later'],
+      title: 'Application Update',
+      message: process.platform === 'win32' ? releaseNotes : releaseName,
+      detail: 'A new version has been downloaded. Restart the application to apply the updates.',
+    };
+
+    dialog.showMessageBox(dialogOpts).then(returnValue => {
+      if (returnValue.response === 0) autoUpdater.quitAndInstall();
+    });
+  });
+
+  autoUpdater.on('error', message => {
+    const dialogErrorOpts = {
+      type: 'info',
+      buttons: ['Ok'],
+      title: 'Error',
+      detail:'There was a problem updating the application ' + message;
+    };
+    dialog.showMessageBox(dialogErrorOpts, () => {});
+  });
+}
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow;
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({

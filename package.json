@@ -25,6 +25,7 @@
     "@electron-forge/maker-squirrel": "6.0.0-beta.46",
     "@electron-forge/maker-zip": "6.0.0-beta.46",
     "@electron-forge/plugin-webpack": "6.0.0-beta.46",
+    "@electron-forge/publisher-nucleus": "^6.0.0-beta.46",
     "@marshallofsound/webpack-asset-relocator-loader": "^0.5.0",
     "@material-ui/core": "^4.8.0",
     "@material-ui/icons": "^4.5.1",
@@ -37,8 +38,8 @@
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
     "lodash": "^4.17.15",
-    "npm-check-updates": "^4.0.1",
     "node-loader": "^0.6.0",
+    "npm-check-updates": "^4.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-test-renderer": "^16.12.0",
@@ -60,41 +61,7 @@
     ]
   },
   "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "electron_react_boilerplate"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.js",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
+    "forge": "./forge.config.js"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
