@@ -40,11 +40,12 @@ if (!dev) {
   });
 
   autoUpdater.on('error', message => {
+    const msg = 'There was a problem updating the application ' + message;
     const dialogErrorOpts = {
       type: 'info',
       buttons: ['Ok'],
       title: 'Error',
-      detail:'There was a problem updating the application ' + message;
+      detail: msg,
     };
     dialog.showMessageBox(dialogErrorOpts, () => {});
   });
