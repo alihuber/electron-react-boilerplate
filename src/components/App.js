@@ -2,8 +2,19 @@ const ipc = require('electron').ipcRenderer;
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import '../index.css';
 import Button from '@material-ui/core/Button';
+import { Provider } from 'react-redux';
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+import store from '../store';
+import { createMessage } from '../actions/messages';
+import Alerts from './layout/Alerts';
+import '../index.css';
+
+const alertOptions = {
+  timeout: 3000,
+  position: 'top center',
+};
 
 const styles = theme => ({
   root: {
@@ -40,13 +51,28 @@ class App extends React.Component {
     const { classes } = this.props;
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <Button variant="outlined" color="primary" className={classes.button} onClick={sendMessage}>
-            Primary
-          </Button>
-        </div>
-      </MuiThemeProvider>
+      <Provider store={store}>
+        <AlertProvider template={AlertTemplate} {...alertOptions}>
+          <MuiThemeProvider theme={theme}>
+            <Alerts />
+            <div className={classes.root}>
+              <Button variant="outlined" color="primary" className={classes.button} onClick={sendMessage}>
+                Primary
+              </Button>
+            </div>
+            <div className={classes.root}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                className={classes.button}
+                onClick={() => store.dispatch(createMessage({ testMessage: 'Hello from test!' }))}
+              >
+                Test alert
+              </Button>
+            </div>
+          </MuiThemeProvider>
+        </AlertProvider>
+      </Provider>
     );
   }
 }
