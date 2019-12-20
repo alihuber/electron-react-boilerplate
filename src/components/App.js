@@ -12,8 +12,8 @@ import Alerts from './layout/Alerts';
 import '../index.css';
 
 const alertOptions = {
-  timeout: 3000,
-  position: 'top center',
+  timeout: 2000,
+  position: 'bottom center',
 };
 
 const styles = theme => ({
@@ -46,35 +46,41 @@ const sendMessage = () => {
   ipc.send('hello-message');
 };
 
-class App extends React.Component {
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Provider store={store}>
-        <AlertProvider template={AlertTemplate} {...alertOptions}>
-          <MuiThemeProvider theme={theme}>
-            <Alerts />
-            <div className={classes.root}>
-              <Button variant="outlined" color="primary" className={classes.button} onClick={sendMessage}>
-                Primary
-              </Button>
-            </div>
-            <div className={classes.root}>
-              <Button
-                variant="outlined"
-                color="secondary"
-                className={classes.button}
-                onClick={() => store.dispatch(createMessage({ testMessage: 'Hello from test!' }))}
-              >
-                Test alert
-              </Button>
-            </div>
-          </MuiThemeProvider>
-        </AlertProvider>
-      </Provider>
-    );
-  }
-}
+const App = ({ classes }) => {
+  return (
+    <Provider store={store}>
+      <AlertProvider template={AlertTemplate} {...alertOptions}>
+        <MuiThemeProvider theme={theme}>
+          <Alerts />
+          <div className={classes.root}>
+            <Button variant="outlined" color="primary" className={classes.button} onClick={sendMessage}>
+              Primary
+            </Button>
+          </div>
+          <div className={classes.root}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.button}
+              onClick={() => store.dispatch(createMessage({ testMessage: 'Hello from test!' }))}
+            >
+              Test alert
+            </Button>
+          </div>
+          <div className={classes.root}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.button}
+              onClick={() => store.dispatch(createMessage({ errorMessage: 'Error from test!' }))}
+            >
+              Error alert
+            </Button>
+          </div>
+        </MuiThemeProvider>
+      </AlertProvider>
+    </Provider>
+  );
+};
 
 export default withStyles(styles)(App);

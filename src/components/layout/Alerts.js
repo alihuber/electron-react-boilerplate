@@ -1,26 +1,23 @@
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { withAlert } from 'react-alert';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-export class Alerts extends Component {
-  static propTypes = {
-    message: PropTypes.object.isRequired,
-  };
-
-  componentDidUpdate(prev) {
-    const { error, alert, message } = this.props;
-    if (message !== prev.message) {
-      if (message.testMessage) {
-        alert.success(message.testMessage);
-      }
+const Alerts = ({ alert, message }) => {
+  useEffect(() => {
+    if (message && message.testMessage) {
+      alert.success(message.testMessage);
     }
-  }
+    if (message && message.errorMessage) {
+      alert.error(message.errorMessage);
+    }
+  }, [message]);
+  return <></>;
+};
 
-  render() {
-    return <Fragment />;
-  }
-}
+Alerts.propTypes = {
+  message: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = state => ({
   message: state.messages,
