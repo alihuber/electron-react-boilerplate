@@ -38,7 +38,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "jest": "^24.9.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "node-loader": "^0.6.0",
     "npm-check-updates": "^4.0.1",
     "prop-types": "^15.7.2",
